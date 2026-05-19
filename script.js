@@ -66,7 +66,7 @@
       const entries = Object.entries(categoryJsonMap);
       for (const [cat, url] of entries) {
         try {
-          const res = await fetch(url);
+          const res = await fetch(encodeURI(url));
           groupedFilesByCategory[cat] = res.ok ? await res.json() : {};
         } catch (e) {
           console.error(e);
@@ -98,7 +98,7 @@
     }
 
     function isUnitCategory() {
-      return currentCategory === "unidades-estratigraficas" || currentCategory === "afiches-posters" || currentCategory === "glosario-estructuras" || currentCategory === "mapas-clasicos" || currentCategory === "menes-aguas-termales-impregnaciones" || currentCategory === "excursiones" || currentCategory === "campos-petroliferos" || currentCategory === "glosario-terminos-estratigraficos";
+      return currentCategory === "unidades-estratigraficas" || currentCategory === "afiches-posters" || currentCategory === "glosario-estructuras" || currentCategory === "mapas-clasicos" || currentCategory === "menes-aguas-termales-impregnaciones" || currentCategory === "excursiones" || currentCategory === "campos-petroliferos" || currentCategory === "glosario-terminos-estratigraficos" || currentCategory === "simbolos-itologicos-y-de-pozos";
     }
 
     function getActiveFilesByLetter() {
@@ -138,16 +138,14 @@
       });
     }
 
-    function renderLetterFiles(letter) {
-      selectedLetterTitle.innerText = `Unidades con letra ${letter}`;
-      const filesByLetter = getActiveFilesByLetter();
-      const files = filesByLetter[letter] || [];
-      // ordenar por número inicial en el nombre del archivo (prefijo como 1-, 2-, 10-)
-      const parseLeadingNumber = (p) => {
-        const name = p.split('/').pop();
-        const m = name.match(/^\s*([0-9]+)[-_.]/);
-        return m ? parseInt(m[1], 10) : Number.POSITIVE_INFINITY;
-      };
+    function parseLeadingNumber(path) {
+      const name = path.split('/').pop();
+      const m = name.match(/^\s*([0-9]+)[-_.]/);
+      return m ? parseInt(m[1], 10) : Number.POSITIVE_INFINITY;
+    }
+
+    function renderFilesList(files, titleText = 'Archivos disponibles', emptyMessage = 'No hay archivos para esta categoría.') {
+      selectedLetterTitle.innerText = titleText;
       const sorted = files.slice().sort((a, b) => {
         const na = parseLeadingNumber(a);
         const nb = parseLeadingNumber(b);
@@ -159,12 +157,11 @@
 
       selectedLetterCount.innerText = `${sorted.length} archivo${sorted.length === 1 ? '' : 's'}`;
       if (sorted.length === 0) {
-        letterFilesList.innerHTML = '<p class="text-gray-500">No hay archivos para esta letra.</p>';
+        letterFilesList.innerHTML = `<p class="text-gray-500">${emptyMessage}</p>`;
       } else {
         letterFilesList.innerHTML = "";
         sorted.forEach(path => {
           const name = path.split("/").pop();
-          // ocultar prefijo numérico del tipo "1-" o "01_" al mostrar
           const displayName = name.replace(/^\s*[0-9]+[-_.\s]*/, '');
           const link = document.createElement("a");
           link.href = encodeURI(path);
@@ -176,6 +173,13 @@
         });
       }
       letterFilesSection.classList.remove("hidden");
+    }
+
+    function renderLetterFiles(letter) {
+      selectedLetterTitle.innerText = `Unidades con letra ${letter}`;
+      const filesByLetter = getActiveFilesByLetter();
+      const files = filesByLetter[letter] || [];
+      renderFilesList(files, `Unidades con letra ${letter}`, 'No hay archivos para esta letra.');
     }
 
     function handleLetterClick(letter) {
@@ -206,13 +210,13 @@
         noResultsMsg.classList.add("hidden");
         unitGroupsSection.classList.remove("hidden");
         const filesByLetter = getActiveFilesByLetter();
-        // caso especial: AFICHES, POSTERS, GLOSARIO DE ESTRUCTURAS, MAPAS CLASICOS, MENES, EXCURSIONES, CAMPOS PETROLIFEROS o GLOSARIO Y TERMINOS -> mostrar todos los archivos directamente
-        if (currentCategory === 'afiches-posters' || currentCategory === 'glosario-estructuras' || currentCategory === 'mapas-clasicos' || currentCategory === 'menes-aguas-termales-impregnaciones' || currentCategory === 'excursiones' || currentCategory === 'campos-petroliferos' || currentCategory === 'glosario-terminos-estratigraficos') {
+        // caso especial: AFICHES, POSTERS, GLOSARIO DE ESTRUCTURAS, MAPAS CLASICOS, MENES, EXCURSIONES, CAMPOS PETROLIFEROS, GLOSARIO Y TERMINOS o SIMBOLOS ITOLOGICOS Y DE POZOS -> mostrar todos los archivos directamente
+        if (currentCategory === 'afiches-posters' || currentCategory === 'glosario-estructuras' || currentCategory === 'mapas-clasicos' || currentCategory === 'menes-aguas-termales-impregnaciones' || currentCategory === 'excursiones' || currentCategory === 'campos-petroliferos' || currentCategory === 'glosario-terminos-estratigraficos' || currentCategory === 'simbolos-itologicos-y-de-pozos') {
           letterButtonsContainer.classList.add('hidden');
           clearUnitLetterBtn.classList.add('hidden');
-          const key = filesByLetter['Todos'] ? 'Todos' : Object.keys(filesByLetter)[0];
-          if (key) {
-            renderLetterFiles(key);
+          const files = filesByLetter['Todos'] ? filesByLetter['Todos'] : Object.values(filesByLetter).flat();
+          if (files.length > 0) {
+            renderFilesList(files, categoryDisplayMap[currentCategory] || 'Archivos disponibles');
           } else {
             letterFilesList.innerHTML = '<p class="text-gray-500">No hay archivos para esta categoría.</p>';
             letterFilesSection.classList.remove('hidden');

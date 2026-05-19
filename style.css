@@ -50,3 +50,10 @@
       padding: 0.2rem 0.6rem;
       border-radius: 30px;
     }
+
+    #letterFilesList a {
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      hyphens: auto;
+    }
