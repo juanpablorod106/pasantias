@@ -200,6 +200,7 @@
 
     // Renderizar las tarjetas con diseño moderno (Tailwind + Fontawesome)
     function renderBooks() {
+      // Si estamos en la vista de unidades/áreas específicas, usar el render existente
       if (isUnitCategory()) {
         // actualizar título según categoría activa
         if (unitGroupsTitle) unitGroupsTitle.innerText = categoryDisplayMap[currentCategory] || 'Recursos';
@@ -233,6 +234,86 @@
             selectedLetterCount.innerText = "";
           }
         }
+        return;
+      }
+
+
+      // Si la categoría activa es 'todos', mostrar las áreas con el mismo estilo de tarjetas
+      if (currentCategory === 'todos') {
+        searchBar.classList.add("hidden");
+        resultCountWrapper.classList.add("hidden");
+        unitGroupsSection.classList.add("hidden");
+        noResultsMsg.classList.add("hidden");
+        booksContainer.classList.remove("hidden");
+        booksContainer.innerHTML = "";
+
+        // mapa de iconos y colores por categoría para mejorar apariencia
+        const areaIconMap = {
+          'unidades-estratigraficas': 'fa-layer-group',
+          'afiches-posters': 'fa-image',
+          'glosario-estructuras': 'fa-book-open',
+          'mapas-clasicos': 'fa-map',
+          'menes-aguas-termales-impregnaciones': 'fa-water',
+          'excursiones': 'fa-route',
+          'campos-petroliferos': 'fa-oil-can',
+          'glosario-terminos-estratigraficos': 'fa-file-contract',
+          'simbolos-itologicos-y-de-pozos': 'fa-map-marker-alt'
+        };
+        const areaBadgeColor = 'bg-gray-100 text-gray-700';
+
+        const catBtns = Array.from(document.querySelectorAll('.cat-filter')).filter(b => b.getAttribute('data-cat') !== 'todos');
+        catBtns.forEach(b => {
+          const cat = b.getAttribute('data-cat');
+          const span = b.querySelector('span');
+          const title = span && span.innerText ? span.innerText : (categoryDisplayMap[cat] || cat);
+          // contador basado en groupedFilesByCategory cuando aplique
+          let count = 0;
+          if (groupedFilesByCategory[cat]) {
+            const val = groupedFilesByCategory[cat];
+            if (Array.isArray(val)) count = val.length;
+            else if (typeof val === 'object') count = Object.values(val).flat().length;
+          }
+
+          const iconClass = areaIconMap[cat] || 'fa-layer-group';
+
+          const card = document.createElement('div');
+          card.className = "glass-card bg-white/80 backdrop-blur-sm p-5 flex flex-col hover-lift transition-all duration-300 border border-gray-100/70 rounded-2xl";
+          card.innerHTML = `
+            <div class="flex items-start justify-between">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#d9eef5] to-[#c2e0f0] flex items-center justify-center text-[#1f5e7e] shadow-inner">
+                <i class="fas ${iconClass} text-xl"></i>
+              </div>
+              <span class="badge-geo ${areaBadgeColor} text-xs font-semibold px-3 py-1 rounded-full shadow-sm">Área</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mt-4 line-clamp-2">${title}</h3>
+            <p class="text-gray-500 text-sm mt-2 line-clamp-3 flex-grow">Abrir la sección de ${title} para ver los archivos y recursos disponibles.</p>
+            <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
+              <div class="flex items-center gap-1 text-xs text-gray-500">
+                <i class="fas fa-folder-open"></i>
+                <span>${count} archivo${count === 1 ? '' : 's'}</span>
+              </div>
+              <div class="flex items-center gap-1 text-xs text-gray-400">
+                <i class="fas fa-arrow-right"></i>
+              </div>
+            </div>
+            <div class="mt-3 flex gap-2">
+              <button class="text-xs bg-slate-100 hover:bg-slate-200 transition rounded-full px-3 py-1 text-slate-700 flex items-center gap-1"><i class="fas fa-eye"></i> Ver</button>
+              <button class="text-xs bg-[#eef2ff] hover:bg-[#e0e7ff] transition rounded-full px-3 py-1 text-[#2c7da0] flex items-center gap-1"><i class="fas fa-folder"></i> Abrir</button>
+            </div>
+          `;
+
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', () => {
+            handleCategoryClick(cat);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+          // evitar que los botones internos disparen la navegación general
+          const innerButtons = card.querySelectorAll('button');
+          innerButtons.forEach(btn => btn.addEventListener('click', ev => ev.stopPropagation()));
+
+          booksContainer.appendChild(card);
+        });
+
         return;
       }
 
