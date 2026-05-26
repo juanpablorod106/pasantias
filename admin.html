@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        /* Zebra Striping for Tables */
+        .admin-table tr:nth-child(even) {
+            background-color: #F1F5F9; /* surface-slate */
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#72787d",
+                        "inverse-primary": "#a3cce5",
+                        "forest-accent": "#1E6F5C",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d6dade",
+                        "tertiary": "#00271e",
+                        "on-tertiary-fixed": "#002019",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#edf1f5",
+                        "on-secondary-fixed-variant": "#004d67",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f6fafe",
+                        "surface-container": "#eaeef2",
+                        "on-tertiary-fixed-variant": "#005141",
+                        "surface": "#f6fafe",
+                        "tertiary-fixed-dim": "#89d5be",
+                        "tertiary-container": "#003f32",
+                        "on-primary-fixed": "#001e2c",
+                        "primary-fixed": "#c2e8ff",
+                        "surface-bright": "#f6fafe",
+                        "outline-variant": "#c1c7cc",
+                        "surface-container-high": "#e4e9ed",
+                        "on-primary": "#ffffff",
+                        "primary": "#002534",
+                        "secondary-container": "#8fd8ff",
+                        "surface-tint": "#3b6379",
+                        "surface-variant": "#dfe3e7",
+                        "on-surface-variant": "#41484c",
+                        "secondary-fixed": "#c1e8ff",
+                        "tertiary-fixed": "#a5f2d9",
+                        "on-secondary-container": "#005f7f",
+                        "deep-ocean": "#0B3B4F",
+                        "on-primary-container": "#7da5bd",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#86d0f6",
+                        "on-background": "#171c1f",
+                        "secondary": "#006688",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#2c3134",
+                        "surface-slate": "#F1F5F9",
+                        "vibrant-teal": "#2C7DA0",
+                        "primary-container": "#0b3b4f",
+                        "on-secondary-fixed": "#001e2b",
+                        "steel-blue": "#1E4A6B",
+                        "on-tertiary-container": "#63ae98",
+                        "surface-container-highest": "#dfe3e7",
+                        "on-primary-fixed-variant": "#214b60",
+                        "surface-container-low": "#f0f4f8",
+                        "on-surface": "#171c1f",
+                        "primary-fixed-dim": "#a3cce5",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "32px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center w-full pr-margin-desktop h-16 fixed top-0 z-[60] px-margin-desktop">
+<div class="flex items-center gap-8">
+<span class="text-title-md font-title-md font-bold text-primary">Laboratorio Virtual de Geociencias</span>
+<div class="hidden md:flex gap-6">
+<a class="text-secondary font-bold border-b-2 border-secondary px-1 py-1 hover:bg-surface-container-low transition-colors text-label-md font-label-md" href="#">Usuarios</a>
+<a class="text-on-surface-variant px-1 py-1 hover:bg-surface-container-low transition-colors text-label-md font-label-md" href="/sections/index.html">Laboratorio</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group hidden sm:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">search</span>
+<input class="bg-surface-container-low border border-outline-variant rounded-xl pl-10 pr-4 py-2 text-body-md focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none" placeholder="Buscar..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-full hover:bg-surface-container-low text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-low text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-low text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-64px)]">
+<!-- SideNavBar -->
+<!-- Main Content -->
+<main class="flex-1 p-margin-desktop bg-surface-slate min-h-screen pt-24 px-margin-mobile md:px-margin-desktop">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 flex-wrap">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Gestión de Usuarios</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant">Administra los roles, permisos y accesos de la plataforma.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 bg-white border border-outline-variant text-primary font-semibold rounded-xl hover:bg-surface-container transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">file_download</span>
+                        Exportar
+                    </button>
+<button id="new-user-button" onclick="abrirModalNuevoUsuario()" class="px-6 py-2.5 bg-secondary text-on-secondary font-bold rounded-xl hover:shadow-lg transition-all flex items-center gap-2 active:scale-95">
+<span class="material-symbols-outlined">person_add</span>
+                        Nuevo Usuario
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Stats Section -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-8">
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm flex items-start justify-between">
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-2">Usuarios Totales</p>
+<h3 class="text-display-lg font-display-lg text-primary">1,284</h3>
+<div class="mt-2 flex items-center gap-1 text-forest-accent">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+<span class="text-label-md font-label-md">+12% este mes</span>
+</div>
+</div>
+<div class="bg-primary-container/10 p-3 rounded-xl">
+<span class="material-symbols-outlined text-primary">groups</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm flex items-start justify-between">
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-2">Activos Ahora</p>
+<h3 class="text-display-lg font-display-lg text-primary">42</h3>
+<div class="mt-2 flex items-center gap-1 text-vibrant-teal">
+<span class="w-2 h-2 rounded-full bg-vibrant-teal animate-pulse"></span>
+<span class="text-label-md font-label-md">Tiempo real</span>
+</div>
+</div>
+<div class="bg-secondary-container/20 p-3 rounded-xl">
+<span class="material-symbols-outlined text-secondary">bolt</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm flex items-start justify-between">
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-2">Nuevos Registros</p>
+<h3 class="text-display-lg font-display-lg text-primary">156</h3>
+<div class="mt-2 flex items-center gap-1 text-on-surface-variant">
+<span class="text-label-md font-label-md">Últimos 7 días</span>
+</div>
+</div>
+<div class="bg-tertiary-fixed/20 p-3 rounded-xl">
+<span class="material-symbols-outlined text-forest-accent">person_add_alt</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm flex items-start justify-between">
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-2">Tasa de Rebote</p>
+<h3 class="text-display-lg font-display-lg text-primary">2.4%</h3>
+<div class="mt-2 flex items-center gap-1 text-error">
+<span class="material-symbols-outlined text-[18px]">trending_down</span>
+<span class="text-label-md font-label-md">-0.5% vs ayer</span>
+</div>
+</div>
+<div class="bg-error-container/20 p-3 rounded-xl">
+<span class="material-symbols-outlined text-error">analytics</span>
+</div>
+</div>
+</div>
+<!-- Content Area: Table Section -->
+<div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant flex items-center justify-between bg-surface-bright">
+<h4 class="font-title-md text-title-md text-primary">Listado de Usuarios</h4>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-label-md font-label-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                            Filtrar por:
+                            <select class="bg-transparent border-none text-primary font-bold focus:ring-0 cursor-pointer">
+<option>Todos los roles</option>
+<option>Administrador</option>
+<option>Editor</option>
+<option>Visualizador</option>
+</select>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left admin-table border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">ID</th>
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Nombre</th>
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Apellido</th>
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Correo</th>
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Rol</th>
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider text-right">Acciones</th>
+</tr>
+</thead>
+
+<tbody id="table" class="divide-y divide-outline-variant/30">
+
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="px-6 py-4 border-t border-outline-variant flex items-center justify-between text-label-md font-label-md text-on-surface-variant bg-surface-container-lowest">
+<div class="">
+                        Mostrando <span class="font-bold text-primary">1-4</span> de <span class="font-bold text-primary">1,284</span> usuarios
+                    </div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant hover:bg-surface-container-low disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl bg-secondary text-on-secondary font-bold">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant hover:bg-surface-container-low text-primary">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant hover:bg-surface-container-low text-primary">3</button>
+<span class="px-2">...</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant hover:bg-surface-container-low text-primary">321</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant hover:bg-surface-container-low">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Add User Modal -->
+<div id="new-user-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 px-4 py-6">
+    <div class="w-full max-w-2xl rounded-[32px] bg-white shadow-2xl overflow-hidden">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-slate-200">
+            <div>
+                <h3 class="text-xl font-semibold text-slate-900">Nuevo Usuario</h3>
+                <p class="text-sm text-slate-500">Crea un nuevo usuario para la plataforma.</p>
+            </div>
+            <button type="button" onclick="cerrarModalNuevoUsuario()" class="text-slate-500 hover:text-slate-900">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="new-user-form" class="p-6 space-y-5" onsubmit="guardarNuevoUsuario(event)">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700" for="new-user-nombre">Nombre</label>
+                    <input id="new-user-nombre" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20" type="text" placeholder="Nombre" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700" for="new-user-apellido">Apellido</label>
+                    <input id="new-user-apellido" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20" type="text" placeholder="Apellido" required />
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-700" for="new-user-correo">Correo</label>
+                    <input id="new-user-correo" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20" type="email" placeholder="correo@dominio.com" required />
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-700" for="new-user-password">Contraseña</label>
+                    <input id="new-user-password" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20" type="password" placeholder="Contraseña" required />
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-700" for="new-user-role">Rol</label>
+                    <select id="new-user-role" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20" required>
+                        <option value="admin">Administrador</option>
+                        <option value="viewer">Estudiante</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex flex-col gap-3 sm:flex-row sm:justify-end sm:items-center pt-2 border-t border-slate-200">
+                <button type="button" onclick="cerrarModalNuevoUsuario()" class="w-full sm:w-auto rounded-2xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all">Cancelar</button>
+                <button type="submit" class="w-full sm:w-auto rounded-2xl bg-secondary text-on-secondary px-6 py-3 text-sm font-semibold hover:bg-on-secondary-fixed-variant transition-all">Crear usuario</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Footer Meta -->
+<footer class="mt-8 pt-8 border-t border-outline-variant/30 flex justify-between items-center text-label-md font-label-md text-outline">
+<p class="">UNIOJEDA © 2026</p>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">Términos de Servicio</a>
+<a class="hover:text-primary transition-colors" href="#">Política de Privacidad</a>
+<a class="hover:text-primary transition-colors" href="#">Soporte Técnico</a>
+</div>
+</footer>
+</main>
+</div>
+<!-- Edit User Modal -->
+<div id="user-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 px-4 py-6">
+    <div class="w-full max-w-2xl rounded-[32px] bg-white shadow-2xl overflow-hidden">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-slate-200">
+            <div>
+                <h3 class="text-xl font-semibold text-slate-900">Editar Usuario</h3>
+                <p class="text-sm text-slate-500">Actualiza los datos del usuario y guarda los cambios.</p>
+            </div>
+            <button type="button" onclick="cerrarModal()" class="text-slate-500 hover:text-slate-900">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="edit-user-form" class="p-6 space-y-5" onsubmit="guardarCambiosUsuario(event)">
+            <input type="hidden" id="edit-user-id" />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700" for="edit-user-nombre">Nombre</label>
+                    <input id="edit-user-nombre" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20" type="text" placeholder="Nombre" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700" for="edit-user-apellido">Apellido</label>
+                    <input id="edit-user-apellido" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20" type="text" placeholder="Apellido" required />
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-700" for="edit-user-correo">Correo</label>
+                    <input id="edit-user-correo" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20" type="email" placeholder="correo@dominio.com" required />
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-700" for="edit-user-password">Contraseña</label>
+                    <input id="edit-user-password" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20" type="password" placeholder="Dejar en blanco para no cambiar" />
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-700" for="edit-user-role">Rol</label>
+                    <select id="edit-user-role" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20" required>
+                        <option value="admin">Administrador</option>
+                        <option value="viewer">Estudiante</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex flex-col gap-3 sm:flex-row sm:justify-end sm:items-center pt-2 border-t border-slate-200">
+                <button type="button" onclick="cerrarModal()" class="w-full sm:w-auto rounded-2xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all">Cancelar</button>
+                <button type="submit" class="w-full sm:w-auto rounded-2xl bg-secondary text-on-secondary px-6 py-3 text-sm font-semibold hover:bg-on-secondary-fixed-variant transition-all">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Floating Action Button for Mobile -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+
+<script>
+        // Micro-interaction for sidebar expansion (if needed) or row highlighting
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', () => {
+                // Future expansion: select row or open details
+            });
+        });
+
+        // Search bar micro-focus effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-105');
+            searchInput.parentElement.style.transition = 'transform 0.2s ease-out';
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-105');
+        });
+    </script>
+</body></html>
