@@ -88,10 +88,10 @@ function renderizarusuarios(data){
                 </td>
                 <td class="px-6 py-4 text-right space-x-1">
                     <button onclick="editarUsuario(${usuario.id})" class="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Editar">
-                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                        <i class="fas fa-pen-to-square text-[20px]"></i>
                     </button>
                     <button onclick="eliminarUsuario(${usuario.id})" class="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Eliminar">
-                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                        <i class="fas fa-trash-can text-[20px]"></i>
                     </button>
                 </td>
             </tr>
