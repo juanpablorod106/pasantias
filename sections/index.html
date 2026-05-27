@@ -47,6 +47,12 @@
       
       <!-- SIDEBAR / FILTROS (categorías) -->
       <aside class="lg:w-72 flex-shrink-0">
+        <!-- Imágenes decorativas en la columna libre -->
+        <div class="flex flex-col gap-5 mb-8">
+          <img src="assets/simulacion.png" alt="Simulación" class="w-full h-44 object-cover rounded-3xl shadow-lg border-2 border-white/50 transition-all hover:scale-[1.02] hover:shadow-xl">
+          <img src="assets/campo.jpg" alt="Campo" class="w-full h-44 object-cover rounded-3xl shadow-lg border-2 border-white/50 transition-all hover:scale-[1.02] hover:shadow-xl">
+        </div>
+
         <div class="glass-card p-5 sticky top-6 sidebar-transition">
           <div class="flex items-center gap-3 mb-5 border-b border-gray-200 pb-3">
             <i class="fas fa-filter text-[#2c7da0] text-xl"></i>
@@ -154,6 +160,24 @@
       </main>
     </div>
 
+    <!-- SECCIÓN DE ESPACIOS DE INTERÉS -->
+    <div class="mt-16 p-6 glass-card border border-[#2c7da0]/20 bg-gradient-to-r from-sky-50/50 to-white shadow-sm overflow-hidden">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center text-red-600 shadow-inner">
+            <i class="fab fa-youtube text-3xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-gray-800 italic">Espacios de Interés: Geología Activa</h3>
+            <p class="text-gray-600 text-sm md:text-base">Recurso educativo recomendado para profundizar en el estudio de las geociencias e ingeniería.</p>
+          </div>
+        </div>
+        <a href="https://www.youtube.com/@Geologia_activa" target="_blank" rel="noopener noreferrer" class="bg-[#ff0000] hover:bg-[#cc0000] text-white px-8 py-3 rounded-full font-bold shadow-lg transition-all flex items-center gap-3 hover:scale-[1.03] active:scale-95">
+          <i class="fab fa-youtube text-xl"></i> Visitar Canal
+        </a>
+      </div>
+    </div>
+
     <!-- Footer institucional moderno -->
     <footer class="mt-16 pt-8 border-t border-gray-200/70 text-center text-gray-500 text-sm flex flex-wrap justify-between items-center gap-2">
       <div class="flex gap-4 justify-center md:justify-start">
@@ -163,7 +187,8 @@
       <div class="flex gap-5">
         <a href="#" class="hover:text-[#2c7da0] transition"><i class="fab fa-github"></i> Repositorio</a>
         <a href="#" class="hover:text-[#2c7da0] transition"><i class="fas fa-chalkboard-user"></i> Br. Juan Rodriguez</a>
-        <a href="#" class="hover:text-[#2c7da0] transition"><i class="fas fa-chalkboard-user"></i> Dr. Emilio Barretto</a>
+        <a href="https://emiliobarreto.wordpress.com/" class="hover:text-[#2c7da0] transition"><i class="fas fa-chalkboard-user"></i> Dr. Emilio Barretto</a>
+        <a href="derechos.html" class="hover:text-[#2c7da0] transition"><i class="fas fa-address-book"></i> Derechos de autor</a>
       </div>
     </footer>
   </div>
