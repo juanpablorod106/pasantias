@@ -13,6 +13,16 @@
   
 </head>
 <body class="antialiased">
+  <!-- Pantalla de Carga -->
+  <div id="loading-screen" class="fixed inset-0 z-[9999] flex items-center justify-center bg-[#f6fafe] transition-opacity duration-500">
+    <div class="flex flex-col items-center gap-4">
+      <div class="w-16 h-16 border-4 border-[#2c7da0] border-t-transparent rounded-full animate-spin"></div>
+      <div class="flex items-center gap-2 text-[#0b3b4f] font-bold text-lg">
+        <i class="fas fa-flask animate-pulse"></i>
+        <span>Preparando Laboratorio...</span>
+      </div>
+    </div>
+  </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
     

@@ -426,6 +426,15 @@
     
     // Inicializar vista
     function inicializarBiblioteca() {
+        // Manejo de la pantalla de carga
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loading-screen');
+            if (loader) {
+                loader.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => loader.remove(), 500);
+            }
+        });
+
         const role = sessionStorage.getItem('userRole');
         if (role === 'admin' || role === 'Administrador' || role === 'supervisor') {
             const adminBtn = document.getElementById('adminPanelBtn');
