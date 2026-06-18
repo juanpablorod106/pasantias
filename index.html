@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link rel="shortcut icon" href="./sections/assets/favicon.png" type="image/x-icon">
   <title>Login | Lab Virtual GeoCiencias</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -64,7 +65,7 @@
         <p class="text-slate-500 text-sm mt-1">Ingresa tus credenciales institucionales</p>
       </div>
 
-      <form id="loginForm" class="space-y-6">
+      <form id="loginForm" class="space-y-6" onsubmit="handleLogin(event)">
         <div>
           <label for="email" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Correo Electrónico</label>
           <div class="relative group">
@@ -92,8 +93,8 @@
         </div>
 
         <div class="flex items-center gap-3">
-          <input type="checkbox" id="remember" class="w-5 h-5 rounded-lg border-slate-300 text-[#2c7da0] focus:ring-[#2c7da0]/20 cursor-pointer">
-          <label for="remember" class="text-sm text-slate-600 font-medium cursor-pointer select-none">Mantener sesión iniciada</label>
+          <input type="checkbox" id="remember-me" class="w-5 h-5 rounded-lg border-slate-300 text-[#2c7da0] focus:ring-[#2c7da0]/20 cursor-pointer">
+          <label for="remember-me" class="text-sm text-slate-600 font-medium cursor-pointer select-none">Mantener sesión iniciada</label>
         </div>
 
         <button type="submit" id="submitBtn"
@@ -138,34 +139,9 @@
             });
 
             // Button loading state simulation
-            loginForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const originalContent = submitBtn.innerHTML;
-                
+            loginForm.addEventListener('submit', (e) => {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> Verificando...';
-
-                const role = await verificar_login();
-
-                if (role) {
-                    submitBtn.classList.remove('bg-[#0b3b4f]');
-                    submitBtn.classList.add('bg-[#1e6f5c]');
-                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Acceso Concedido';
-
-                    // Redirección basada en rol
-                    setTimeout(() => {
-                        sessionStorage.setItem('userRole', role);
-                        if (role === 'viewer' || role === 'Estudiante') {
-                            window.location.href = 'sections/index.html';
-                        } else if (role === 'admin' || role === 'Administrador' || role === 'supervisor') {
-                            window.location.href = 'admin.html';
-                        }
-                    }, 800);
-                } else {
-                    alert("Correo o contraseña incorrectos. Por favor, intente de nuevo.");
-                    submitBtn.innerHTML = originalContent;
-                    submitBtn.disabled = false;
-                }
             });
 
             // Smooth parallax for background elements

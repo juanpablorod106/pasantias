@@ -6,6 +6,7 @@
   <title>Lab Virtual GeoCiencias | Escuela de Petróleo y Gas</title>
   <!-- TailwindCSS + Font Awesome + Google Fonts (Inter) -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -44,8 +45,16 @@
           <div class="h-1 w-24 bg-gradient-to-r from-[#2c7da0] to-[#61a5c2] rounded-full mt-3 mx-auto md:mx-0"></div>
         </div>
         <div class="flex justify-center gap-3">
-          <span class="bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-slate-700 shadow-sm flex items-center gap-2"><i class="fas fa-database text-[#2c7da0]"></i> Recursos institucionales</span>          <!-- Botón de administración (oculto por defecto) -->
-          <a href="../admin.html" id="adminPanelBtn" class="hidden bg-[#0b3b4f] hover:bg-[#0f4c5f] text-white px-4 py-2 rounded-full text-sm font-bold shadow-md flex items-center gap-2 transition-all active:scale-95"><i class="fas fa-user-shield"></i> Panel Administrativo</a>
+          <span id="welcomeUser" class="hidden bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-slate-700 shadow-sm items-center gap-2">
+            <i class="fas fa-user-check text-[#2c7da0]"></i>
+            <span id="userName"></span>
+          </span>
+          <a href="../admin.html" id="adminPanelBtn" class="hidden bg-[#0b3b4f] hover:bg-[#0f4c5f] text-white px-4 py-2 rounded-full text-sm font-bold shadow-md flex items-center gap-2 transition-all active:scale-95">
+            <i class="fas fa-user-shield"></i> Panel Administrativo
+          </a>
+          <button id="logoutBtn" class="hidden bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-bold shadow-md flex items-center gap-2 transition-all active:scale-95">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+          </button>
         </div>
       </div>
     </div>

@@ -435,11 +435,37 @@
             }
         });
 
-        const role = sessionStorage.getItem('userRole');
+        // Verificar tanto localStorage como sessionStorage para el rol del usuario
+        const role = localStorage.getItem('userRole') || sessionStorage.getItem('userRole');
+        const userName = localStorage.getItem('userName') || sessionStorage.getItem('userName');
+
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        if (role) {
+            if (userName) {
+                document.getElementById('welcomeUser').classList.remove('hidden');
+                document.getElementById('welcomeUser').classList.add('flex');
+                document.getElementById('userName').textContent = userName;
+            }
+            logoutBtn.classList.remove('hidden');
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userRole');
+                sessionStorage.removeItem('userRole');
+                window.location.href = '../index.html';
+            });
+        } else {
+            // Si no hay rol, el usuario no ha iniciado sesión. Redirigir a la página de login.
+            alert('Por favor, inicia sesión para acceder a los recursos.');
+            window.location.href = '../index.html';
+            return; // Detener la ejecución para evitar renderizar la página
+        }
+
         if (role === 'admin' || role === 'Administrador' || role === 'supervisor') {
             const adminBtn = document.getElementById('adminPanelBtn');
             if (adminBtn) adminBtn.classList.remove('hidden');
         }
+
         updateActiveCategoryButton();
         renderBooks();
     }

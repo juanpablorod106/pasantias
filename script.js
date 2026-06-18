@@ -14,7 +14,7 @@ async function verificar_login(){
     try {
         const { data, error } = await supabaseClient
             .from('users')
-            .select('role')
+            .select('role, nombre, apellido')
             .eq('username', email)
             .eq('password', password)
             .single();
@@ -23,13 +23,55 @@ async function verificar_login(){
             return null;
         }
 
-        return data.role;
+        return data;
     } catch (error) {
         console.error('Error inesperado: ', error);
         return null;
     }
 }
 
+async function handleLogin(event) {
+    event.preventDefault();
+    const userData = await verificar_login();
+
+    if (userData) {
+        const rememberMe = document.getElementById('remember-me')?.checked;
+
+        // Limpiar almacenamientos anteriores para evitar conflictos
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userName');
+        sessionStorage.removeItem('userRole');
+        sessionStorage.removeItem('userName');
+
+        if (rememberMe) {
+            localStorage.setItem('userRole', userData.role);
+            localStorage.setItem('userName', `${userData.nombre} ${userData.apellido}`);
+        } else {
+            sessionStorage.setItem('userRole', userData.role);
+            sessionStorage.setItem('userName', `${userData.nombre} ${userData.apellido}`);
+        }
+
+        // Redirigir al usuario según su rol
+        if (userData.role === 'admin' || userData.role === 'Administrador' || userData.role === 'supervisor') {
+            window.location.href = 'admin.html';
+        } else {
+            window.location.href = 'sections/index.html';
+        }
+    } else {
+        alert('Correo o contraseña incorrectos. Por favor, inténtalo de nuevo.');
+    }
+}
+
+function logout() {
+    // Limpiar ambos almacenamientos para cerrar la sesión
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userName');
+    sessionStorage.removeItem('userRole');
+    sessionStorage.removeItem('userName');
+    
+    // Redirigir al usuario a la página de inicio de sesión
+    window.location.href = '../index.html';
+}
 
 async function cargarUsuarios(){
     try{
@@ -256,4 +298,32 @@ async function eliminarUsuario(id) {
     }
 }
 
-cargarUsuarios();
+
+// Función de autoejecución para proteger rutas
+(function() {
+    // Solo ejecutar esta lógica si estamos en la página de administración
+    if (window.location.pathname.includes('admin.html')) {
+        const role = localStorage.getItem('userRole') || sessionStorage.getItem('userRole');
+        const userName = localStorage.getItem('userName') || sessionStorage.getItem('userName');
+
+        if (userName) {
+            document.getElementById('welcomeUser').classList.remove('hidden');
+            document.getElementById('welcomeUser').classList.add('flex');
+            document.getElementById('userName').textContent = userName;
+        }
+        if (role !== 'admin' && role !== 'Administrador' && role !== 'supervisor') {
+            const modal = document.getElementById('access-denied-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+            } else {
+                alert('Acceso denegado. Debes ser administrador.');
+                window.location.href = 'index.html';
+            }
+            return; // Detener la ejecución para evitar que se carguen los usuarios
+        }
+        cargarUsuarios();
+    }
+})();
