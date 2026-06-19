@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        startWebView("pasantias-tawny.vercel.app/admin.html");
+        startWebView("labvirtual-geociencias-uniojeda.vercel.app/admin.html");
     }
 
     @Override
