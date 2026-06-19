@@ -445,7 +445,9 @@
             if (userName) {
                 document.getElementById('welcomeUser').classList.remove('hidden');
                 document.getElementById('welcomeUser').classList.add('flex');
-                document.getElementById('userName').textContent = userName;
+                
+                const firstName = userName.trim().split(' ')[0];
+                document.getElementById('userName').innerHTML = `<span class="sm:hidden">${firstName}</span><span class="hidden sm:inline">${userName}</span>`;
             }
             logoutBtn.classList.remove('hidden');
             logoutBtn.addEventListener('click', () => {

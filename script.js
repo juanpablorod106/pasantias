@@ -1,9 +1,9 @@
-const URL_SUPABASE='https://iwoaqxecwocbvhbinahx.supabase.co'
-const KEY= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3b2FxeGVjd29jYnZoYmluYWh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTk3MjgsImV4cCI6MjA5NTI5NTcyOH0.aBTfzl4wWJIv6uQKCM4G-4gNTlcm-6V7Uqbijjbmg_A'
+const URL_SUPABASE = 'https://iwoaqxecwocbvhbinahx.supabase.co'
+const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3b2FxeGVjd29jYnZoYmluYWh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTk3MjgsImV4cCI6MjA5NTI5NTcyOH0.aBTfzl4wWJIv6uQKCM4G-4gNTlcm-6V7Uqbijjbmg_A'
 
-const supabaseClient = supabase.createClient(URL_SUPABASE,KEY)
+const supabaseClient = supabase.createClient(URL_SUPABASE, KEY)
 
-async function verificar_login(){
+async function verificar_login() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
 
@@ -68,30 +68,55 @@ function logout() {
     localStorage.removeItem('userName');
     sessionStorage.removeItem('userRole');
     sessionStorage.removeItem('userName');
-    
+
     // Redirigir al usuario a la página de inicio de sesión
     window.location.href = '../index.html';
 }
 
-async function cargarUsuarios(){
-    try{
-        const {data, error} = await supabaseClient.from('users').select('*');
-    
-        if(error){
+async function cargarUsuarios() {
+    try {
+        const { data, error } = await supabaseClient.from('users').select('*');
+
+        if (error) {
             console.error('Error al cargar usuarios: ', error);
             return;
+        }
+
+        const countEl = document.getElementById('totalUsersCount');
+        if (countEl && data) {
+            countEl.textContent = data.length;
+        }
+
+        let adminCount = 0;
+        let studentCount = 0;
+
+        if (data) {
+            data.forEach(user => {
+                const role = (user.role || '').toLowerCase();
+                if (role === 'admin' || role === 'administrador' || role === 'supervisor') {
+                    adminCount++;
+                } else {
+                    studentCount++;
+                }
+            });
+
+            const adminEl = document.getElementById('adminUsersCount');
+            if (adminEl) adminEl.textContent = adminCount;
+
+            const studentEl = document.getElementById('studentUsersCount');
+            if (studentEl) studentEl.textContent = studentCount;
         }
 
         renderizarusuarios(data);
 
     }
-    catch (error){
-    console.error('Error inesperado: ', error);
+    catch (error) {
+        console.error('Error inesperado: ', error);
     }
 }
 
 
-function renderizarusuarios(data){
+function renderizarusuarios(data) {
     const tbody = document.getElementById('table');
 
     if (!data || data.length === 0) {
@@ -105,7 +130,7 @@ function renderizarusuarios(data){
         return;
     }
     let html = '';
-    
+
     data.forEach(usuario => {
         let rolClase = 'bg-gray-200 text-gray-800';
         let rolEtiqueta = usuario.role || 'Sin rol';
@@ -116,7 +141,7 @@ function renderizarusuarios(data){
             rolClase = 'bg-green-100 text-green-800';
             rolEtiqueta = 'Estudiante';
         }
-        
+
         html += `
             <tr class="hover:bg-gray-50 transition-colors group">
                 <td class="px-6 py-4 text-gray-900 font-medium">${usuario.id ?? 'Sin ID'}</td>
@@ -139,7 +164,7 @@ function renderizarusuarios(data){
             </tr>
         `;
     });
-    
+
     tbody.innerHTML = html;
 }
 
@@ -276,22 +301,22 @@ async function eliminarUsuario(id) {
     if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
         return;
     }
-    
+
     try {
         const { error } = await supabaseClient
             .from('users')
             .delete()
             .eq('id', id);
-        
+
         if (error) {
             console.error('Error al eliminar:', error);
             alert('Error al eliminar usuario');
             return;
         }
-        
+
         alert('Usuario eliminado exitosamente');
         cargarUsuarios(); // Recargar la tabla
-        
+
     } catch (error) {
         console.error('Error:', error);
         alert('Error al eliminar usuario');
@@ -300,7 +325,7 @@ async function eliminarUsuario(id) {
 
 
 // Función de autoejecución para proteger rutas
-(function() {
+(function () {
     // Solo ejecutar esta lógica si estamos en la página de administración
     if (window.location.pathname.includes('admin.html')) {
         const role = localStorage.getItem('userRole') || sessionStorage.getItem('userRole');
@@ -309,7 +334,9 @@ async function eliminarUsuario(id) {
         if (userName) {
             document.getElementById('welcomeUser').classList.remove('hidden');
             document.getElementById('welcomeUser').classList.add('flex');
-            document.getElementById('userName').textContent = userName;
+
+            const firstName = userName.trim().split(' ')[0];
+            document.getElementById('userName').innerHTML = `<span class="sm:hidden">${firstName}</span><span class="hidden sm:inline">${userName}</span>`;
         }
         if (role !== 'admin' && role !== 'Administrador' && role !== 'supervisor') {
             const modal = document.getElementById('access-denied-modal');
@@ -325,5 +352,44 @@ async function eliminarUsuario(id) {
             return; // Detener la ejecución para evitar que se carguen los usuarios
         }
         cargarUsuarios();
+        cargarTotalArchivos();
     }
 })();
+
+async function cargarTotalArchivos() {
+    const categoryJsonMap = {
+        "unidades-estratigraficas": "sections/assets/1-UNIDADES ESTRATIGRAFICAS/index.json",
+        "afiches-posters": "sections/assets/2-AFICHES, POSTERS/index.json",
+        "glosario-estructuras": "sections/assets/3-GLOSARIO DE ESTRUCTURAS/index.json",
+        "mapas-clasicos": "sections/assets/4-MAPAS CLASICOS/index.json",
+        "menes-aguas-termales-impregnaciones": "sections/assets/5-MENES, AGUAS TERMALES E IMPREGNACIONES/index.json",
+        "excursiones": "sections/assets/6-EXCURSIONES/index.json",
+        "campos-petroliferos": "sections/assets/7-CAMPOS PETROLIFEROS/index.json",
+        "glosario-terminos-estratigraficos": "sections/assets/8-GLOSARIO Y TERMINOS ESTRATIGRAFICOS/index.json",
+        "simbolos-itologicos-y-de-pozos": "sections/assets/9-SIMBOLOS ITOLOGICOS Y DE POZOS/index.json",
+    };
+
+    let totalFiles = 24; // Base de recursos inicial según sections/script.js
+
+    const entries = Object.entries(categoryJsonMap);
+    for (const [cat, url] of entries) {
+        try {
+            const res = await fetch(encodeURI(url));
+            if (res.ok) {
+                const val = await res.json();
+                if (Array.isArray(val)) {
+                    totalFiles += val.length;
+                } else if (typeof val === 'object') {
+                    totalFiles += Object.values(val).flat().length;
+                }
+            }
+        } catch (e) {
+            console.error('Error cargando contador de archivos:', url, e);
+        }
+    }
+
+    const countEl = document.getElementById('totalFilesCount');
+    if (countEl) {
+        countEl.textContent = totalFiles;
+    }
+}
